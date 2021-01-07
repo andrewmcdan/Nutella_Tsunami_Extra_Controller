@@ -1,0 +1,108 @@
+4062 main menu.
+4063      output mode
+4064           all samples play through one pair of output regardless of midi channel
+4083              ports one and two.
+4084              ports three and four.
+4085              ports five and six.
+4086              ports seven and eight.
+4065          each midi channel can be assign a particular pair of output
+4066              midi channel 1 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4067              midi channel 2 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4068              midi channel 3 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4069              midi channel 4 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4070              midi channel 5 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4071              midi channel 6 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4072              midi channel 7 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4073              midi channel 8 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4074              midi channel 9 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4075              midi channel 10 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4076              midi channel 11 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4077              midi channel 12 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4078              midi channel 13 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4079              midi channel 14 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4080              midi channel 15 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4081              midi channel 16 output ports
+4083                  ports one and two.
+4084                  ports three and four.
+4085                  ports five and six.
+4086                  ports seven and eight.
+4087      hold time to jump.
+4088          250 milliseconds.
+4089          500 milliseconds.
+4090          750 milliseconds.
+4091          1 second.
+4092      jump size.
+4093          jump 25.
+4094          jump 50.
+4095          jump 100.
+4096          jump 250.
+
+4061 - menu exit
+
+
+
+4082 - output ports
+4083 - ports one and two.
+4084 - ports three and four.
+4085 - ports five and six.
+4086 - ports seven and eight.
