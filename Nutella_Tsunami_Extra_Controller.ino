@@ -1,6 +1,18 @@
 #include <MIDI.h>
 #include <Tsunami.h>
 #include <Bounce.h>
+#include <SdFat.h>
+
+SdFat sd;
+SdFile settingsFile;
+
+const size_t LINE_DIM = 130;
+
+char line[LINE_DIM];
+
+// #define error(s) sd.errorHalt_P(PSTR(s))
+
+const int chipSelect = 15;
 
 Tsunami tsunami; 
 
@@ -55,7 +67,6 @@ void setup(){
     pinMode(BUTTON2,INPUT_PULLUP);
     pinMode(BUTTON3,INPUT_PULLUP);
 
-    MIDI1.begin(MIDI_CHANNEL_OMNI);
     Serial.begin(115200);
 
     // init the translationMap array to all 1's so that it isnt random data.
@@ -64,6 +75,71 @@ void setup(){
             translationMap[i][p]=1;
         }
     }
+        if(!sd.begin(chipSelect,SPI_HALF_SPEED)){
+        Serial.println("SD card failure");
+        // sd.initErrorHalt();
+    }
+    Serial.println("SD card initialized");
+
+    // settingsFile.open("settings.jsn");
+    if (!settingsFile.open("settings.jsn", O_READ)) Serial.println("open failed");
+
+
+    int ln = 1;
+    int n = 0;
+    while ((n = settingsFile.fgets(line, sizeof(line))) > 0) {
+        // Print line number.
+        Serial.print(ln);
+        Serial.print(":");
+        Serial.print(n);
+        Serial.print(": ");
+        Serial.print(line);
+        if (line[n - 1] != '\n') {
+            // Line is too long or last line is missing nl.
+            Serial.println(F(" <-- missing nl"));
+        }
+
+        switch(ln++){
+            case 1:
+            {
+                oneOutPort = line[0]=='t';
+                char tempChar = line[1];
+                oneOutPortNum = atoi(tempChar);
+                break;
+            }
+            case 2:
+            {
+                holdTimeToJump = atoi(line);
+                break;
+            }
+            case 3:
+            {
+                jumpSize = atoi(line);
+                break;
+            }
+            case 4:
+            {
+                for(int i = 0; i < 16; i++){
+                    char tempChar = line[i];
+                    midiChanOutPort[i]= atoi(tempChar);
+                }
+                break;
+            }
+            default:
+            {
+                // translation map
+                int midiChan = (ln-6)/128;
+                int noteNum = (ln-6)%128;
+                translationMap[midiChan][noteNum] = atoi(line);
+                Serial.print("midi channel: ");
+                Serial.println(midiChan);
+                Serial.print("note num: ");
+                Serial.println(noteNum);
+            }
+        }
+    }
+    Serial.println(F("\nDone"));
+    settingsFile.close();
 
     // We should wait for the Tsunami to finish reset before trying to send
     // commands.
@@ -85,6 +161,9 @@ void setup(){
     // Allow time for the Tsunami to respond with the version string and
     //  number of tracks.
     delay(100);
+
+    // begin midi input
+    MIDI1.begin(MIDI_CHANNEL_OMNI);
 }
 
 void loop(){
@@ -202,6 +281,7 @@ void loop(){
                 if (velocity > 0) {
                     if(selPressed){
                         translationMap[channel-1][note]=currentTrack;
+                        writeSettingsToSd();
                     }
                     playTrack(translationMap[channel-1][note],velocity,midiChanOutPort[channel-1],false);
                     break;
@@ -235,6 +315,25 @@ void playTrack(int trackNum, int trackVelocity, int outPort, boolean lockEn, boo
     }else{
         tsunami.trackPlayPoly(trackNum, outPort, lockEn);
     }
+}
+
+void writeSettingsToSd(){
+    sd.remove("settings.jsn");
+    if (!settingsFile.open("settings.jsn", FILE_WRITE)) Serial.println("open failed");
+    settingsFile.print(oneOutPort?"t":"f");
+    settingsFile.println(String(oneOutPortNum));
+    settingsFile.println(String(holdTimeToJump));
+    settingsFile.println(String(jumpSize));
+    for(int i = 0; i < 15; i++){
+        settingsFile.print(String(midiChanOutPort[i]));
+    }
+    settingsFile.println(String(midiChanOutPort[15]));
+    for(int i = 0; i < 16; i++){
+        for(int p = 0; p < 128; p++){
+            settingsFile.println(String(translationMap[i][p]));
+        }
+    }
+    settingsFile.close();
 }
 
 void playMenuStateAudio(){
